@@ -44,19 +44,19 @@ describe('Array functions', () => {
     expect(
       XEUtils.uniq([11, 33, 33, { a: 11 }, { a: 11 }])
     ).toEqual([11, 33, { a: 11 }, { a: 11 }])
-    let a1 = { a: 11 }
+    const a1 = { a: 11 }
     expect(
       XEUtils.uniq([11, 33, 33, a1, a1])
     ).toEqual([11, 33, { a: 11 }])
     expect(
-      XEUtils.uniq([{a: 1, b: 11}, {a: 1, b: 22}, {a: 4, b: 33}, {a: 5, bb: 44}], 'a')
-    ).toEqual([{a: 1, b: 11}, {a: 4, b: 33}, {a: 5, bb: 44}])
+      XEUtils.uniq([{ a: 1, b: 11 }, { a: 1, b: 22 }, { a: 4, b: 33 }, { a: 5, bb: 44 }], 'a')
+    ).toEqual([{ a: 1, b: 11 }, { a: 4, b: 33 }, { a: 5, bb: 44 }])
     expect(
-      XEUtils.uniq([{a: 1, b: 11}, {a: 1, b: 22}, {a: 4, b: 33}, {a: 5, b: 44}], 'b')
-    ).toEqual([{a: 1, b: 11}, {a: 1, b: 22}, {a: 4, b: 33}, {a: 5, b: 44}])
+      XEUtils.uniq([{ a: 1, b: 11 }, { a: 1, b: 22 }, { a: 4, b: 33 }, { a: 5, b: 44 }], 'b')
+    ).toEqual([{ a: 1, b: 11 }, { a: 1, b: 22 }, { a: 4, b: 33 }, { a: 5, b: 44 }])
     expect(
-      XEUtils.uniq([{a: 1, b: 11}, {a: 1, b: 22}, {a: 4, b: 33}, {a: 5, b: 44}], (item) => item.b <= 22 ? 1 : 2)
-    ).toEqual([{a: 1, b: 11}, {a: 4, b: 33}])
+      XEUtils.uniq([{ a: 1, b: 11 }, { a: 1, b: 22 }, { a: 4, b: 33 }, { a: 5, b: 44 }], (item) => item.b <= 22 ? 1 : 2)
+    ).toEqual([{ a: 1, b: 11 }, { a: 4, b: 33 }])
   })
 
   test('union()', () => {
@@ -147,7 +147,7 @@ describe('Array functions', () => {
     expect(
       XEUtils.slice([11, 22, 33, 44], 0, 1)
     ).toEqual([11])
-    let method = function () {
+    const method = function () {
       expect(
         XEUtils.slice(arguments, 1, 3)
       ).toEqual([22, 33])
@@ -286,7 +286,7 @@ describe('Array functions', () => {
         { name: 'd', age: 27 },
         { name: 'z', age: 26 },
         { name: 'z', age: 26 }]
-        , ['age', item => item.name])
+      , ['age', item => item.name])
     ).toEqual([
       { name: 'x', age: 26 },
       { name: 'z', age: 26 },
@@ -920,6 +920,33 @@ describe('Array functions', () => {
     expect(
       XEUtils.sum({ val1: 21, val2: 34, val3: 47 })
     ).toEqual(102)
+    expect(
+      XEUtils.sum([0.26710027,
+        30, 3, 0.0175, 18, 0.0145, 0.38, 13, 15600, 0.7, 14, 1.57, 1, 30, 760, 0.15,
+        45, 1.6, 1, 1011.468, 13, 3, 1, 1.76, 0.018, 13, 15600, 3, 3, 80, 15600, 2.3,
+        14.6, 485, 0.2749008, 760, 2.3, 760, 13, 123, 109.073, 760, 0.68, 0.68, 1900,
+        14, 22.5, 1900, 1900, 15600, 2.05, 550, 1.23, 485, 13, 2.3, 0.2, 1900, 220,
+        760, 20, 13, 1900, 485, 2050, 30, 0.65, 1, 500, 1.68, 30, 0.015, 3, 14, 1, 3,
+        1.69, 13, 13, 1.68, 14.5, 1.75, 485
+      ])
+    ).toEqual(82733.09800107)
+    expect(
+      XEUtils.sum([0.26710027,
+        30, 3, 0.0175, 18, 0.0145, 0.38, 13, 15600, 0.7, 14, 1.57, 1, 30, 760, 0.15,
+        45, 1.6, 1, 1011.468, 13, 3, 1, 1.76, 0.018, 13, 15600, 3, 3, 80, 15600, 2.3,
+        14.6, 485, 0.2749008, 760, 2.3, 760, 13, 123, 109.073, 760, 0.68, 0.68, 1900,
+        14, 22.5, 1900, 1900, 15600, 2.05, 550, 1.23, 485, 13, 2.3, 0.2, 1900, 220,
+        760, 20, 13, 1900, 485, 2050, 30, 0.65, 1, 500, 1.68, 30, 0.015, 3, 14, 1, 3,
+        1.69, 13, 13, 1.68, 14.5, 1.75, 485
+      ]) === XEUtils.sum([
+        30, 3, 0.0175, 18, 0.0145, 0.38, 13, 15600, 0.7, 14, 1.57, 1, 30, 760, 0.15,
+        45, 1.6, 1, 1011.468, 13, 3, 1, 1.76, 0.018, 13, 15600, 3, 3, 80, 15600, 2.3,
+        14.6, 485, 0.2749008, 760, 2.3, 760, 13, 123, 109.073, 760, 0.68, 0.68, 1900,
+        14, 22.5, 1900, 1900, 15600, 2.05, 550, 1.23, 485, 13, 2.3, 0.2, 1900, 220,
+        760, 20, 13, 1900, 485, 2050, 30, 0.65, 1, 500, 1.68, 30, 0.015, 3, 14, 1, 3,
+        1.69, 13, 13, 1.68, 14.5, 1.75, 485, 0.26710027
+      ])
+    ).toEqual(true)
   })
 
   test('mean()', () => {
@@ -1470,7 +1497,7 @@ describe('Array functions', () => {
     expect(
       XEUtils.toArrayTree(function () { })
     ).toEqual([])
-    let list1 = [
+    const list1 = [
       { id: 1, name: '111' },
       { id: 2, parentId: 1, name: '222' },
       { id: 3, name: '333' },
@@ -1504,7 +1531,7 @@ describe('Array functions', () => {
         children: []
       }
     ])
-    let list2 = [
+    const list2 = [
       { id: 1, name: '111', seq: 5 },
       { id: 2, parentId: 1, name: '222', seq: 3 },
       { id: 3, name: '333', seq: 6 },
@@ -1550,7 +1577,7 @@ describe('Array functions', () => {
         children: []
       }
     ])
-    let list3 = [
+    const list3 = [
       { id: 1, name: '111' },
       { id: 2, parentId: 1, name: '222' },
       { id: 3, name: '333' },
@@ -1591,7 +1618,7 @@ describe('Array functions', () => {
         children: []
       }
     ])
-    let list4 = [
+    const list4 = [
       { id: 1, name: '111' },
       { id: 2, parentId: 1, name: '222' },
       { id: 3, name: '333' },
@@ -1653,7 +1680,7 @@ describe('Array functions', () => {
     expect(
       XEUtils.toTreeArray(function () { })
     ).toEqual([])
-    let list1 = [
+    const list1 = [
       {
         id: 1,
         name: '111',
@@ -1687,7 +1714,8 @@ describe('Array functions', () => {
       list1[0].children[0].children[0],
       list1[1]
     ])
-    let list2 = [
+
+    const list2 = [
       {
         data: { id: 1, name: '111' },
         id: 1,
@@ -1713,25 +1741,69 @@ describe('Array functions', () => {
         children: []
       },
       {
-        data: { id: 5, parentId: 22, name: '555' },
+        data: { id: 5, parentId: 222, name: '555' },
         id: 5,
-        parentId: 22,
+        parentId: 222,
         children: []
       }
     ]
     expect(
       XEUtils.toTreeArray(list2, { data: 'data' })
     ).toEqual([
+      { id: 1, parentId: null, name: '111' },
+      { id: 2, parentId: 1, name: '222' },
+      { id: 4, parentId: 2, name: '444' },
+      { id: 3, parentId: null, name: '333' },
+      { id: 5, parentId: null, name: '555' }
+    ])
+
+    const list6 = [
+      {
+        data: { id: 1, name: '111' },
+        id: 1,
+        children: [
+          {
+            data: { id: 2, parentId: 1, name: '222' },
+            id: 2,
+            parentId: 1,
+            children: [
+              {
+                data: { id: 4, parentId: 2, name: '444' },
+                id: 4,
+                parentId: 2,
+                children: []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        data: { id: 3, name: '333' },
+        id: 3,
+        children: []
+      },
+      {
+        data: { id: 5, parentId: 222, name: '555' },
+        id: 5,
+        parentId: 222,
+        children: []
+      }
+    ]
+    expect(
+      XEUtils.toTreeArray(list6, { data: 'data', updated: false })
+    ).toEqual([
       { id: 1, name: '111' },
       { id: 2, parentId: 1, name: '222' },
       { id: 4, parentId: 2, name: '444' },
       { id: 3, name: '333' },
-      { id: 5, parentId: 22, name: '555' }
+      { id: 5, parentId: 222, name: '555' }
     ])
-    let list3 = [
+
+    const list3 = [
       {
         id: 1,
         name: '111',
+        parentId: null,
         children: [
           {
             id: 2,
@@ -1751,6 +1823,7 @@ describe('Array functions', () => {
       {
         id: 3,
         name: '333',
+        parentId: null,
         children: []
       }
     ]
@@ -1759,7 +1832,8 @@ describe('Array functions', () => {
     ).toEqual([
       {
         id: 1,
-        name: '111'
+        name: '111',
+        parentId: null
       },
       {
         id: 2,
@@ -1773,7 +1847,8 @@ describe('Array functions', () => {
       },
       {
         id: 3,
-        name: '333'
+        name: '333',
+        parentId: null
       }
     ])
   })

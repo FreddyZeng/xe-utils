@@ -1,8 +1,8 @@
 const XEUtils = require('../func')
 
 describe('Date functions', () => {
-  let date = new Date(2017, 0, 1, 14, 5, 30, 99)
-  let time = date.getTime()
+  const date = new Date(2017, 0, 1, 14, 5, 30, 99)
+  const time = date.getTime()
   test('now()', () => {
     expect(
       XEUtils.now() >= time
@@ -514,6 +514,68 @@ describe('Date functions', () => {
     expect(
       XEUtils.toDateString(date, '[Week] yyyy-MM-dd [[yyyy-MM-dd]]')
     ).toEqual('Week 2017-01-01 [yyyy-MM-dd]')
+
+    // 周日视图
+    expect(
+      XEUtils.toDateString('2024-12-31', 'W', { firstDay: 0 })
+    ).toEqual('1')
+    expect(
+      XEUtils.toDateString('2025-01-01', 'W', { firstDay: 0 })
+    ).toEqual('1')
+    expect(
+      XEUtils.toDateString('2025-12-28', 'W', { firstDay: 0 })
+    ).toEqual('53')
+    expect(
+      XEUtils.toDateString('2026-01-03', 'W', { firstDay: 0 })
+    ).toEqual('53')
+
+    // 周一视图
+    expect(
+      XEUtils.toDateString('2024-12-31', 'W', { firstDay: 1 })
+    ).toEqual('1')
+    expect(
+      XEUtils.toDateString('2025-01-01', 'W', { firstDay: 1 })
+    ).toEqual('1')
+
+    // 周二视图
+    expect(
+      XEUtils.toDateString('2024-12-31', 'W', { firstDay: 2 })
+    ).toEqual('1')
+    expect(
+      XEUtils.toDateString('2025-01-01', 'W', { firstDay: 2 })
+    ).toEqual('1')
+
+    // 周三视图
+    expect(
+      XEUtils.toDateString('2024-12-31', 'W', { firstDay: 3 })
+    ).toEqual('52')
+    expect(
+      XEUtils.toDateString('2025-01-01', 'W', { firstDay: 3 })
+    ).toEqual('1')
+
+    // 周四视图
+    expect(
+      XEUtils.toDateString('2024-12-31', 'W', { firstDay: 4 })
+    ).toEqual('52')
+    expect(
+      XEUtils.toDateString('2025-01-01', 'W', { firstDay: 4 })
+    ).toEqual('52')
+
+    // 周五视图
+    expect(
+      XEUtils.toDateString('2024-12-31', 'W', { firstDay: 5 })
+    ).toEqual('53')
+    expect(
+      XEUtils.toDateString('2025-01-01', 'W', { firstDay: 5 })
+    ).toEqual('53')
+
+    // 周六视图
+    expect(
+      XEUtils.toDateString('2024-12-31', 'W', { firstDay: 6 })
+    ).toEqual('53')
+    expect(
+      XEUtils.toDateString('2025-01-01', 'W', { firstDay: 6 })
+    ).toEqual('53')
   })
 
   test('getWhatYear()', () => {
@@ -1249,6 +1311,195 @@ describe('Date functions', () => {
     ).toEqual(new Date(2017, 11, 20, 23, 59, 59, 999))
   })
 
+  test('getWhatHours()', () => {
+    expect(
+      XEUtils.getWhatHours().toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours(0).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours(-1).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours(123).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours(null).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours(undefined).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours({}).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours([]).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours([2018, 1, 1]).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours({ time: 2018 }).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours('null').toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours(new Date('')).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours(new Date('abc')).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatHours(date, -1)
+    ).toEqual(new Date(2017, 0, 1, 13, 5, 30, 99))
+    expect(
+      XEUtils.getWhatHours(time, 1)
+    ).toEqual(new Date(2017, 0, 1, 15, 5, 30, 99))
+    expect(
+      XEUtils.getWhatHours('2017-12-20 12', -1)
+    ).toEqual(new Date(2017, 11, 20, 11))
+    expect(
+      XEUtils.getWhatHours(new Date(2017, 11, 10, 12), -1)
+    ).toEqual(new Date(2017, 11, 10, 11))
+    expect(
+      XEUtils.getWhatHours('2017-12-20 12', 1)
+    ).toEqual(new Date(2017, 11, 20, 13))
+    expect(
+      XEUtils.getWhatHours('2017-12-20 12', 0, 'first')
+    ).toEqual(new Date(2017, 11, 20, 12, 0, 0, 0))
+    expect(
+      XEUtils.getWhatHours('2017-12-20 12', 0, 'last')
+    ).toEqual(new Date(2017, 11, 20, 12, 59, 59, 999))
+  })
+
+  test('getWhatMinutes()', () => {
+    expect(
+      XEUtils.getWhatMinutes().toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes(0).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes(-1).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes(123).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes(null).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes(undefined).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes({}).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes([]).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes([2018, 1, 1]).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes({ time: 2018 }).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes('null').toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes(new Date('')).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes(new Date('abc')).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatMinutes(date, -1)
+    ).toEqual(new Date(2017, 0, 1, 14, 4, 30, 99))
+    expect(
+      XEUtils.getWhatMinutes(time, 1)
+    ).toEqual(new Date(2017, 0, 1, 14, 6, 30, 99))
+    expect(
+      XEUtils.getWhatMinutes('2017-12-20 12:30', -1)
+    ).toEqual(new Date(2017, 11, 20, 12, 29))
+    expect(
+      XEUtils.getWhatMinutes(new Date(2017, 11, 10, 12, 30), -1)
+    ).toEqual(new Date(2017, 11, 10, 12, 29))
+    expect(
+      XEUtils.getWhatMinutes('2017-12-20 12:30', 1)
+    ).toEqual(new Date(2017, 11, 20, 12, 31))
+    expect(
+      XEUtils.getWhatMinutes('2017-12-20 12:30', 0, 'first')
+    ).toEqual(new Date(2017, 11, 20, 12, 30, 0, 0))
+    expect(
+      XEUtils.getWhatMinutes('2017-12-20 12:30', 0, 'last')
+    ).toEqual(new Date(2017, 11, 20, 12, 30, 59, 999))
+  })
+
+  test('getWhatSeconds()', () => {
+    expect(
+      XEUtils.getWhatSeconds().toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds(0).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds(-1).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds(123).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds(null).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds(undefined).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds({}).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds([]).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds([2018, 1, 1]).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds({ time: 2018 }).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds('null').toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds(new Date('')).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds(new Date('abc')).toString()
+    ).toEqual('Invalid Date')
+    expect(
+      XEUtils.getWhatSeconds(date, -1)
+    ).toEqual(new Date(2017, 0, 1, 14, 5, 29, 99))
+    expect(
+      XEUtils.getWhatSeconds(time, 1)
+    ).toEqual(new Date(2017, 0, 1, 14, 5, 31, 99))
+    expect(
+      XEUtils.getWhatSeconds('2017-12-20 12:30:40', -1)
+    ).toEqual(new Date(2017, 11, 20, 12, 30, 39))
+    expect(
+      XEUtils.getWhatSeconds(new Date(2017, 11, 10, 12, 30, 40), -1)
+    ).toEqual(new Date(2017, 11, 10,  12, 30, 39))
+    expect(
+      XEUtils.getWhatSeconds('2017-12-20 12:30:40', 1)
+    ).toEqual(new Date(2017, 11, 20, 12, 30, 41))
+    expect(
+      XEUtils.getWhatSeconds('2017-12-20 12:30:40', 0, 'first')
+    ).toEqual(new Date(2017, 11, 20, 12, 30, 40, 0))
+    expect(
+      XEUtils.getWhatSeconds('2017-12-20 12:30:40', 0, 'last')
+    ).toEqual(new Date(2017, 11, 20, 12, 30, 40, 999))
+  })
+
   test('getYearDay()', () => {
     expect(
       XEUtils.getYearDay().toString()
@@ -1298,6 +1549,7 @@ describe('Date functions', () => {
   })
 
   test('getYearWeek()', () => {
+    // 默认视图
     expect(
       XEUtils.getYearWeek().toString()
     ).toEqual('NaN')
@@ -1367,24 +1619,576 @@ describe('Date functions', () => {
     expect(
       XEUtils.getYearWeek('2018-12-20')
     ).toEqual(51)
+
+    // 周日视图
+    expect(XEUtils.getYearWeek('2019-12-28', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2019-12-29', 0)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2019-12-30', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2019-12-31', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-01', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-02', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-03', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-04', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-05', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2020-12-26', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2020-12-27', 0)).toEqual(53)
+
+    expect(XEUtils.getYearWeek('2020-12-28', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-12-29', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-12-30', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-12-31', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2021-01-01', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2021-01-02', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2021-01-03', 0)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2021-01-04', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-05', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-06', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-07', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-08', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-09', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-10', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2021-01-11', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2021-01-12', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2021-12-25', 0)).toEqual(51)
+    expect(XEUtils.getYearWeek('2021-12-26', 0)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2021-12-27', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-28', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-29', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-30', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-31', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-01-01', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-01-02', 0)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2022-01-03', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-04', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-05', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-06', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-07', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-08', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-09', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2022-01-10', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2022-01-11', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2022-12-24', 0)).toEqual(51)
+    expect(XEUtils.getYearWeek('2022-12-25', 0)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2022-12-26', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-27', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-28', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-29', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-30', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-31', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-01-01', 0)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2023-01-02', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-03', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-04', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-05', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-06', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-07', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-08', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2023-01-09', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2023-01-10', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2023-12-23', 0)).toEqual(51)
+    expect(XEUtils.getYearWeek('2023-12-24', 0)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2023-12-25', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-26', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-27', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-28', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-29', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-30', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-31', 0)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2024-01-01', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-02', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-03', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-04', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-05', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-06', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-07', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2024-01-08', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2024-01-09', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2024-12-21', 0)).toEqual(51)
+    expect(XEUtils.getYearWeek('2024-12-22', 0)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2024-12-23', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-24', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-25', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-26', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-27', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-28', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-29', 0)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2024-12-30', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-12-31', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-01', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-02', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-03', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-04', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-05', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2025-01-06', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-07', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-08', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-09', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-10', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-11', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-12', 0)).toEqual(3)
+
+    expect(XEUtils.getYearWeek('2025-01-13', 0)).toEqual(3)
+    expect(XEUtils.getYearWeek('2025-01-14', 0)).toEqual(3)
+
+    expect(XEUtils.getYearWeek('2025-12-20', 0)).toEqual(51)
+    expect(XEUtils.getYearWeek('2025-12-21', 0)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2025-12-22', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-23', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-24', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-25', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-26', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-27', 0)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-28', 0)).toEqual(53)
+
+    expect(XEUtils.getYearWeek('2025-12-29', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2025-12-30', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2025-12-31', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2026-01-01', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2026-01-02', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2026-01-03', 0)).toEqual(53)
+    expect(XEUtils.getYearWeek('2026-01-04', 0)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2026-01-05', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-06', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-07', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-08', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-09', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-10', 0)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-11', 0)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2026-01-12', 0)).toEqual(2)
+    expect(XEUtils.getYearWeek('2026-01-13', 0)).toEqual(2)
+
     expect(
-      XEUtils.getYearWeek('2013-01-01', 1)
-    ).toEqual(53)
-    expect(
-      XEUtils.getYearWeek('2013-01-07', 1)
+      XEUtils.getYearWeek('2013-01-01', 0)
     ).toEqual(1)
     expect(
+      XEUtils.getYearWeek('2013-01-06', 0)
+    ).toEqual(2)
+    expect(
+      XEUtils.getYearWeek('2013-01-07', 0)
+    ).toEqual(2)
+    expect(
+      XEUtils.getYearWeek('2013-01-27', 0)
+    ).toEqual(5)
+    expect(
+      XEUtils.getYearWeek('2013-01-31', 0)
+    ).toEqual(5)
+    expect(
+      XEUtils.getYearWeek('2021-01-01', 0)
+    ).toEqual(53)
+    expect(
+      XEUtils.getYearWeek('2021-01-10', 0)
+    ).toEqual(2)
+    expect(
+      XEUtils.getYearWeek('2021-01-31', 0)
+    ).toEqual(5)
+    expect(
+      XEUtils.getYearWeek('2021-12-05', 0)
+    ).toEqual(49)
+    expect(
+      XEUtils.getYearWeek('2021-12-08', 0)
+    ).toEqual(49)
+
+    // 周六视图
+    expect(XEUtils.getYearWeek('2019-12-28', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2019-12-29', 6)).toEqual(53)
+
+    expect(XEUtils.getYearWeek('2019-12-30', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2019-12-31', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-01-01', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-01-02', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-01-03', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-01-04', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-05', 6)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2020-12-26', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2020-12-27', 6)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2020-12-28', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2020-12-29', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2020-12-30', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2020-12-31', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-01-01', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-01-02', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-03', 6)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2021-01-04', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-05', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-06', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-07', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-08', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-09', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2021-01-10', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2021-01-11', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2021-01-12', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2021-12-25', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-26', 6)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2021-12-27', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-28', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-29', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-30', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-31', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-01-01', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-02', 6)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2022-01-03', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-04', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-05', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-06', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-07', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-08', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2022-01-09', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2022-01-10', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2022-01-11', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2022-12-24', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-25', 6)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2022-12-26', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-27', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-28', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-29', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-30', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-31', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-01', 6)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2023-01-02', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-03', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-04', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-05', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-06', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-07', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2023-01-08', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2023-01-09', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2023-01-10', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2023-12-23', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-24', 6)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2023-12-25', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-26', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-27', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-28', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-29', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-30', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-12-31', 6)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2024-01-01', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-02', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-03', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-04', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-05', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-06', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2024-01-07', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2024-01-08', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2024-01-09', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2024-12-21', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-22', 6)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2024-12-23', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-24', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-25', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-26', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-27', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-28', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2024-12-29', 6)).toEqual(53)
+
+    expect(XEUtils.getYearWeek('2024-12-30', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2024-12-31', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2025-01-01', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2025-01-02', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2025-01-03', 6)).toEqual(53)
+    expect(XEUtils.getYearWeek('2025-01-04', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-05', 6)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2025-01-06', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-07', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-08', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-09', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-10', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-11', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-12', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2025-01-13', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-14', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2025-12-20', 6)).toEqual(51)
+    expect(XEUtils.getYearWeek('2025-12-21', 6)).toEqual(51)
+
+    expect(XEUtils.getYearWeek('2025-12-22', 6)).toEqual(51)
+    expect(XEUtils.getYearWeek('2025-12-23', 6)).toEqual(51)
+    expect(XEUtils.getYearWeek('2025-12-24', 6)).toEqual(51)
+    expect(XEUtils.getYearWeek('2025-12-25', 6)).toEqual(51)
+    expect(XEUtils.getYearWeek('2025-12-26', 6)).toEqual(51)
+    expect(XEUtils.getYearWeek('2025-12-27', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-28', 6)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2025-12-29', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-30', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-31', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2026-01-01', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2026-01-02', 6)).toEqual(52)
+    expect(XEUtils.getYearWeek('2026-01-03', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-04', 6)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2026-01-05', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-06', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-07', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-08', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-09', 6)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-10', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2026-01-11', 6)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2026-01-12', 6)).toEqual(2)
+    expect(XEUtils.getYearWeek('2026-01-13', 6)).toEqual(2)
+
+    expect(
+      XEUtils.getYearWeek('2013-01-01', 6)
+    ).toEqual(1)
+    expect(
+      XEUtils.getYearWeek('2013-01-06', 6)
+    ).toEqual(2)
+    expect(
+      XEUtils.getYearWeek('2013-01-07', 6)
+    ).toEqual(2)
+    expect(
+      XEUtils.getYearWeek('2013-01-27', 6)
+    ).toEqual(5)
+    expect(
+      XEUtils.getYearWeek('2013-01-31', 6)
+    ).toEqual(5)
+    expect(
+      XEUtils.getYearWeek('2021-01-01', 6)
+    ).toEqual(52)
+    expect(
+      XEUtils.getYearWeek('2021-01-10', 6)
+    ).toEqual(2)
+    expect(
+      XEUtils.getYearWeek('2021-01-31', 6)
+    ).toEqual(5)
+    expect(
+      XEUtils.getYearWeek('2021-12-05', 6)
+    ).toEqual(49)
+    expect(
+      XEUtils.getYearWeek('2021-12-08', 6)
+    ).toEqual(49)
+
+    // 周一视图
+    expect(XEUtils.getYearWeek('2019-12-28', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2019-12-29', 1)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2019-12-30', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2019-12-31', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-01', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-02', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-03', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-04', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2020-01-05', 1)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2020-12-26', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2020-12-27', 1)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2020-12-28', 1)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-12-29', 1)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-12-30', 1)).toEqual(53)
+    expect(XEUtils.getYearWeek('2020-12-31', 1)).toEqual(53)
+    expect(XEUtils.getYearWeek('2021-01-01', 1)).toEqual(53)
+    expect(XEUtils.getYearWeek('2021-01-02', 1)).toEqual(53)
+    expect(XEUtils.getYearWeek('2021-01-03', 1)).toEqual(53)
+
+    expect(XEUtils.getYearWeek('2021-01-04', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-05', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-06', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-07', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-08', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-09', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2021-01-10', 1)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2021-01-11', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2021-01-12', 1)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2021-12-25', 1)).toEqual(51)
+    expect(XEUtils.getYearWeek('2021-12-26', 1)).toEqual(51)
+
+    expect(XEUtils.getYearWeek('2021-12-27', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-28', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-29', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-30', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2021-12-31', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-01-01', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-01-02', 1)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2022-01-03', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-04', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-05', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-06', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-07', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-08', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2022-01-09', 1)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2022-01-10', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2022-01-11', 1)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2022-12-24', 1)).toEqual(51)
+    expect(XEUtils.getYearWeek('2022-12-25', 1)).toEqual(51)
+
+    expect(XEUtils.getYearWeek('2022-12-26', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-27', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-28', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-29', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-30', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2022-12-31', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-01-01', 1)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2023-01-02', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-03', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-04', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-05', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-06', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-07', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2023-01-08', 1)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2023-01-09', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2023-01-10', 1)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2023-12-23', 1)).toEqual(51)
+    expect(XEUtils.getYearWeek('2023-12-24', 1)).toEqual(51)
+
+    expect(XEUtils.getYearWeek('2023-12-25', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-26', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-27', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-28', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-29', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-30', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2023-12-31', 1)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2024-01-01', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-02', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-03', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-04', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-05', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-06', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-01-07', 1)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2024-01-08', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2024-01-09', 1)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2024-12-21', 1)).toEqual(51)
+    expect(XEUtils.getYearWeek('2024-12-22', 1)).toEqual(51)
+
+    expect(XEUtils.getYearWeek('2024-12-23', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-24', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-25', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-26', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-27', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-28', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2024-12-29', 1)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2024-12-30', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2024-12-31', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-01', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-02', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-03', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-04', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-01-05', 1)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2025-01-06', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-07', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-08', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-09', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-10', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-11', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2025-01-12', 1)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2025-01-13', 1)).toEqual(3)
+    expect(XEUtils.getYearWeek('2025-01-14', 1)).toEqual(3)
+
+    expect(XEUtils.getYearWeek('2025-12-20', 1)).toEqual(51)
+    expect(XEUtils.getYearWeek('2025-12-21', 1)).toEqual(51)
+
+    expect(XEUtils.getYearWeek('2025-12-22', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-23', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-24', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-25', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-26', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-27', 1)).toEqual(52)
+    expect(XEUtils.getYearWeek('2025-12-28', 1)).toEqual(52)
+
+    expect(XEUtils.getYearWeek('2025-12-29', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-12-30', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2025-12-31', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-01', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-02', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-03', 1)).toEqual(1)
+    expect(XEUtils.getYearWeek('2026-01-04', 1)).toEqual(1)
+
+    expect(XEUtils.getYearWeek('2026-01-05', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2026-01-06', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2026-01-07', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2026-01-08', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2026-01-09', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2026-01-10', 1)).toEqual(2)
+    expect(XEUtils.getYearWeek('2026-01-11', 1)).toEqual(2)
+
+    expect(XEUtils.getYearWeek('2026-01-12', 1)).toEqual(3)
+    expect(XEUtils.getYearWeek('2026-01-13', 1)).toEqual(3)
+
+    expect(
+      XEUtils.getYearWeek('2013-01-01', 1)
+    ).toEqual(1)
+    expect(
+      XEUtils.getYearWeek('2013-01-06', 1)
+    ).toEqual(1)
+    expect(
+      XEUtils.getYearWeek('2013-01-07', 1)
+    ).toEqual(2)
+    expect(
       XEUtils.getYearWeek('2013-01-27', 1)
-    ).toEqual(3)
+    ).toEqual(4)
+    expect(
+      XEUtils.getYearWeek('2013-01-31', 1)
+    ).toEqual(5)
     expect(
       XEUtils.getYearWeek('2021-01-01', 1)
-    ).toEqual(52)
+    ).toEqual(53)
     expect(
       XEUtils.getYearWeek('2021-01-10', 1)
     ).toEqual(1)
     expect(
       XEUtils.getYearWeek('2021-01-31', 1)
     ).toEqual(4)
+    expect(
+      XEUtils.getYearWeek('2021-12-05', 1)
+    ).toEqual(48)
     expect(
       XEUtils.getYearWeek('2021-12-08', 1)
     ).toEqual(49)
@@ -1426,13 +2230,13 @@ describe('Date functions', () => {
     ).toEqual('NaN')
     expect(
       XEUtils.getMonthWeek(date)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2017-01-01')
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek(new Date(2017, 0, 1))
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2017-01-01') === XEUtils.getMonthWeek(new Date(2017, 0, 1))
     ).toEqual(true)
@@ -1441,41 +2245,42 @@ describe('Date functions', () => {
     ).toEqual(3)
     expect(
       XEUtils.getMonthWeek('2018-05-20')
-    ).toEqual(2)
+    ).toEqual(3)
     expect(
       XEUtils.getMonthWeek(new Date(2018, 4, 20))
-    ).toEqual(2)
+    ).toEqual(3)
     expect(
       XEUtils.getMonthWeek('2018-05-20') === XEUtils.getMonthWeek(new Date(2018, 4, 20))
     ).toEqual(true)
     expect(
       XEUtils.getMonthWeek('2018-05-25')
-    ).toEqual(3)
+    ).toEqual(4)
     expect(
       XEUtils.getMonthWeek('2018-05-29')
-    ).toEqual(4)
+    ).toEqual(5)
 
+    // 周日视图
     expect(
       XEUtils.getMonthWeek('2018-05-01', 0)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-05-28', 0)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-29', 0)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-30', 0)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-31', 0)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-06-01', 0)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-06-02', 0)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-06-03', 0)
     ).toEqual(1)
@@ -1483,34 +2288,36 @@ describe('Date functions', () => {
       XEUtils.getMonthWeek('2018-06-04', 0)
     ).toEqual(1)
 
+    // 周一视图
     expect(
       XEUtils.getMonthWeek('2018-05-01', 1)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-05-28', 1)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-29', 1)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-30', 1)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-31', 1)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-06-01', 1)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-06-02', 1)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-06-03', 1)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-06-04', 1)
     ).toEqual(1)
 
+    // 周二视图
     expect(
       XEUtils.getMonthWeek('2018-05-01', 2)
     ).toEqual(1)
@@ -1519,26 +2326,27 @@ describe('Date functions', () => {
     ).toEqual(4)
     expect(
       XEUtils.getMonthWeek('2018-05-29', 2)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-05-30', 2)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-05-31', 2)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-01', 2)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-02', 2)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-03', 2)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-04', 2)
-    ).toEqual(5)
+    ).toEqual(1)
 
+    // 周三视图
     expect(
       XEUtils.getMonthWeek('2018-05-01', 3)
     ).toEqual(4)
@@ -1550,26 +2358,27 @@ describe('Date functions', () => {
     ).toEqual(4)
     expect(
       XEUtils.getMonthWeek('2018-05-30', 3)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-05-31', 3)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-01', 3)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-02', 3)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-03', 3)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-04', 3)
-    ).toEqual(5)
+    ).toEqual(1)
 
+    // 周四视图
     expect(
       XEUtils.getMonthWeek('2018-05-01', 4)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-28', 4)
     ).toEqual(4)
@@ -1581,23 +2390,24 @@ describe('Date functions', () => {
     ).toEqual(4)
     expect(
       XEUtils.getMonthWeek('2018-05-31', 4)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-01', 4)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-02', 4)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-03', 4)
-    ).toEqual(5)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-06-04', 4)
-    ).toEqual(5)
+    ).toEqual(1)
 
+    // 周五视图
     expect(
       XEUtils.getMonthWeek('2018-05-01', 5)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-28', 5)
     ).toEqual(4)
@@ -1623,24 +2433,25 @@ describe('Date functions', () => {
       XEUtils.getMonthWeek('2018-06-04', 5)
     ).toEqual(1)
 
+    // 周六视图
     expect(
       XEUtils.getMonthWeek('2018-05-01', 6)
-    ).toEqual(4)
+    ).toEqual(1)
     expect(
       XEUtils.getMonthWeek('2018-05-28', 6)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-29', 6)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-30', 6)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-05-31', 6)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-06-01', 6)
-    ).toEqual(4)
+    ).toEqual(5)
     expect(
       XEUtils.getMonthWeek('2018-06-02', 6)
     ).toEqual(1)
@@ -1820,63 +2631,63 @@ describe('Date functions', () => {
   test('getDateDiff()', () => {
     expect(
       XEUtils.getDateDiff()
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(0)
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(-1)
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(null)
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(undefined)
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(undefined, null)
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(new Date(''))
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(new Date('abc'))
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff([])
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(null, '2017-12-21')
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff([], {})
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff({ time: 2018 }, '2017-12-21')
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(0, '2017-12-21')
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff([2018, 1, 1], '2017-12-21')
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff([2018, 1, 1], 0)
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
     expect(
       XEUtils.getDateDiff(new Date(2017, 0, 1, 14, 5, 30).getTime(), new Date(2017, 0, 1, 15, 1, 48).getTime())
-    ).toEqual({ done: true, time: 3378000, yyyy: 0, MM: 0, dd: 0, HH: 0, mm: 56, ss: 18, S: 0 })
+    ).toEqual({ status: true, done: true, time: 3378000, yyyy: 0, MM: 0, dd: 0, HH: 0, mm: 56, ss: 18, S: 0 })
     expect(
       XEUtils.getDateDiff(new Date(2017, 0, 1, 14, 5, 30), new Date(2017, 0, 1, 15, 1, 48))
-    ).toEqual({ done: true, time: 3378000, yyyy: 0, MM: 0, dd: 0, HH: 0, mm: 56, ss: 18, S: 0 })
+    ).toEqual({ status: true, done: true, time: 3378000, yyyy: 0, MM: 0, dd: 0, HH: 0, mm: 56, ss: 18, S: 0 })
     expect(
       XEUtils.getDateDiff('2017-11-20', '2017-12-21')
-    ).toEqual({ done: true, time: 2678400000, yyyy: 0, MM: 1, dd: 1, HH: 0, mm: 0, ss: 0, S: 0 })
+    ).toEqual({ status: true, done: true, time: 2678400000, yyyy: 0, MM: 1, dd: 1, HH: 0, mm: 0, ss: 0, S: 0 })
     expect(
       XEUtils.getDateDiff('2017-12-20', '2017-12-21')
-    ).toEqual({ done: true, time: 86400000, yyyy: 0, MM: 0, dd: 1, HH: 0, mm: 0, ss: 0, S: 0 })
+    ).toEqual({ status: true, done: true, time: 86400000, yyyy: 0, MM: 0, dd: 1, HH: 0, mm: 0, ss: 0, S: 0 })
     expect(
       XEUtils.getDateDiff('2018-01-01', '2017-12-21')
-    ).toEqual({ done: false, time: 0 })
+    ).toEqual({ status: false, done: false, time: 0 })
   })
 })

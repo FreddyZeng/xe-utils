@@ -1,3 +1,5 @@
+var assign = require('./assign')
+
 /**
   * 节流函数；当被调用 n 毫秒后才会执行，如果在这时间内又被调用则至少每隔 n 秒毫秒调用一次该函数
   *
@@ -9,11 +11,11 @@
 function throttle (callback, wait, options) {
   var args = null
   var context = null
-  var opts = options || {}
   var runFlag = false
   var timeout = null
-  var optLeading = 'leading' in opts ? opts.leading : true
-  var optTrailing = 'trailing' in opts ? opts.trailing : false
+  var opts = assign({ leading: true, trailing: true }, options)
+  var optLeading = opts.leading
+  var optTrailing = opts.trailing
 
   var gcFn = function () {
     args = null
@@ -26,12 +28,18 @@ function throttle (callback, wait, options) {
     timeout = setTimeout(endFn, wait)
     gcFn()
   }
-  
+
   var endFn = function () {
     timeout = null
-    if (!runFlag && optTrailing === true) {
-      runFn()
+    if (runFlag) {
+      gcFn()
+      return
     }
+    if (optTrailing === true) {
+      runFn()
+      return
+    }
+    gcFn()
   }
 
   var cancelFn = function () {
@@ -49,12 +57,12 @@ function throttle (callback, wait, options) {
     args = arguments
     context = this
     runFlag = false
-    if (timeout === null) {
-      if (optLeading === true) {
-        runFn()
-      } else if (optTrailing === true) {
-        timeout = setTimeout(endFn, wait)
-      }
+    if (timeout === null && optLeading === true) {
+      runFn()
+      return
+    }
+    if (optTrailing === true) {
+      timeout = setTimeout(endFn, wait)
     }
   }
 

@@ -13,8 +13,8 @@ var isValidDate = require('./isValidDate')
   * 返回前几天或后几天的日期
   *
   * @param {Date} date 日期或数字
-  * @param {Number} offset 天(默认当天)、前几天、后几天
-  * @param {String} mode 获取时分秒(null默认当前时分秒)、日初(first)、日末(last)
+  * @param {Number} offset 天偏移量(默认0)、前几天、后几天
+  * @param {String} mode 指定小时(null默认当前分)、0时(first)、23时(last)
   * @return {Date}
   */
 function getWhatDay (date, offset, mode) {

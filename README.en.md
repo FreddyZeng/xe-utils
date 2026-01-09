@@ -2,9 +2,12 @@
 
 [简体中文](README.md) | English  
 
+[![github star](https://img.shields.io/github/stars/x-extends/xe-utils.svg)](https://github.com/x-extends/xe-utils/stargazers)
 [![gitee star](https://gitee.com/x-extends/xe-utils/badge/star.svg?theme=dark)](https://gitee.com/x-extends/xe-utils/stargazers)
+[![gitcode star](https://gitcode.com/x-extends/xe-utils/star/badge.svg)](https://gitcode.com/x-extends/xe-utils/stargazers)
 [![npm version](https://img.shields.io/npm/v/xe-utils.svg?style=flat-square)](https://www.npmjs.com/package/xe-utils)
-[![npm build](https://app.travis-ci.com/x-extends/vxe-utils.svg?branch=master)](https://app.travis-ci.com/x-extends/xe-utils)
+[![NodeJS with Webpack](https://github.com/x-extends/xe-utils/actions/workflows/webpack.yml/badge.svg)](https://github.com/x-extends/xe-utils/actions/workflows/webpack.yml)
+[![gzip size: JS](http://img.badgesize.io/https://unpkg.com/xe-utils/dist/dist/xe-utils.umd.min.js?compression=gzip&label=gzip%20size:%20JS)](https://unpkg.com/xe-utils/dist/dist/xe-utils.umd.min.js)
 [![npm downloads](https://img.shields.io/npm/dm/xe-utils.svg?style=flat-square)](http://npm-stat.com/charts.html?package=xe-utils)
 [![npm license](https://img.shields.io/github/license/mashape/apistatus.svg)](LICENSE)
 
@@ -18,7 +21,7 @@ JavaScript libraries, utility
 
 ## Docs
 
-[To view the document](https://x-extends.github.io/xe-utils/) [View document](https://vxetable.cn/xe-utils)
+[To view the document](https://vxeui.com/xe-utils/)
 
 ## Installing
 
@@ -41,7 +44,7 @@ Get on [unpkg](https://unpkg.com/xe-utils/) and [cdnjs](https://cdn.jsdelivr.net
 ### Import all methods
 
 ```javascript
-import _XEUtils_ from 'xe-utils'
+import XEUtils from 'xe-utils'
 
 XEUtils.toDateString(Date.now())
 // 2018-01-01 10:30:28
